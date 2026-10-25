@@ -1,0 +1,38 @@
+:root {
+  color-scheme: light;
+  --color-ink: #17233f;
+  --color-muted: #66738b;
+  --color-accent: #e65f3b;
+  --color-accent-dark: #c94d2d;
+  --color-line: #e4e8ef;
+  --color-page: #fbfcfe;
+  --content-width: 1080px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--color-page);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: #f9ded5;
+  color: var(--color-ink);
+}

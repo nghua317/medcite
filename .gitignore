@@ -1,0 +1,15 @@
+# Secrets and local-only configuration
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+*.local
+config.local.*
+settings.local.*
+*.pem
+*.key
