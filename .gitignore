@@ -13,3 +13,6 @@ config.local.*
 settings.local.*
 *.pem
 *.key
+/dist/
+.vinext/
+.cloudflare/

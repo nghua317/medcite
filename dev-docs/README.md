@@ -150,3 +150,9 @@
 ## 11. 实施验收资料
 
 后端验收规则、目录责任、最小链路、11 个接口场景、运行命令和 Git 归档约束，统一见 [IMPLEMENTATION_SOURCE_OF_TRUTH.md](IMPLEMENTATION_SOURCE_OF_TRUTH.md)。
+
+## 12. Cloudflare 部署讨论（2026-10-26）
+
+用户确认先将网站部署到已登录的 Cloudflare 账号。检查发现账号中已有 `refine-bibliography` Pages 项目，但其公网地址显示服务暂停，且项目没有连接 Git 仓库；该项目的手动上传入口只接受静态 HTML、CSS 和 JS，不能承载当前 Next.js 的 DOI 查询接口。
+
+因此首版采用 Cloudflare Workers + vinext 适配现有 Next.js 16 项目。首版不启用缓存、KV/数据库或图片优化。兼容性检查显示当前 App Router、页面、布局和 Route Handler 为 100% compatible；本地 vinext 构建和接口验证通过后，再进行公开部署。

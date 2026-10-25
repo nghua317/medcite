@@ -26,6 +26,9 @@ export function normalizeDoi(input: unknown): string {
       if (!["doi.org", "dx.doi.org"].includes(url.hostname.toLowerCase())) {
         throw new Error("Unsupported DOI host");
       }
+      if (url.search || url.hash) {
+        throw new Error("DOI links must not include a query or fragment");
+      }
       value = decodeURIComponent(url.pathname.replace(/^\/+/, ""));
     } catch {
       throw new CitationLookupError(
@@ -37,7 +40,7 @@ export function normalizeDoi(input: unknown): string {
   }
 
   value = value.replace(/[.,;\s]+$/, "").toLowerCase();
-  if (!DOI_PATTERN.test(value)) {
+  if (value.length > 500 || !DOI_PATTERN.test(value)) {
     throw new CitationLookupError(
       "INVALID_DOI",
       "Enter a valid DOI or DOI link.",

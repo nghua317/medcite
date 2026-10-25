@@ -117,11 +117,16 @@ export async function findInPubMed(doi: string): Promise<MetadataProviderResult 
   };
 
   const normalizedLanguage = language.toLowerCase();
+  const hasPublicationTypes = publicationTypes.length > 0;
+  const isJournalArticleType = publicationTypes.some(
+    (type) => type.trim().toLowerCase() === "journal article",
+  );
   return {
     metadata,
     isJournalArticle:
       Boolean(journal) &&
-      (!normalizedLanguage || ["en", "eng", "english"].includes(normalizedLanguage)),
+      (!normalizedLanguage || ["en", "eng", "english"].includes(normalizedLanguage)) &&
+      (!hasPublicationTypes || isJournalArticleType),
   };
 }
 

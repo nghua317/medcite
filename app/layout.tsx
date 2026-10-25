@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import {
-  ColorSchemeScript,
-  MantineProvider,
-  mantineHtmlProps,
-} from "@mantine/core";
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "MedCite — Simple medical citations",
@@ -24,7 +21,7 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body>
-        <MantineProvider forceColorScheme="light">{children}</MantineProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
