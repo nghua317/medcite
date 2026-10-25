@@ -62,6 +62,17 @@
   margin-top: 22px;
 }
 
+.feedback {
+  margin-top: 18px;
+}
+
+.sourceNote {
+  margin: -4px 4px 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
 .resultCard {
   border-color: var(--color-line);
   background: white;
@@ -91,13 +102,32 @@
   line-height: 1.3;
 }
 
-.citationPlaceholder {
+.citationText {
   margin-top: 22px;
   border-radius: 12px;
   background: #f7f8fb;
-  color: var(--color-muted);
+  color: var(--color-ink);
   padding: 20px;
   line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.editor {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.editGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.editorHint {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
 }
 
 .editButton {
@@ -129,5 +159,9 @@
   .resultHeader {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .editGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
