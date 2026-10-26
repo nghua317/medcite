@@ -4,6 +4,7 @@ const REQUIRED_FIELDS = ["authors", "title", "journal", "year"] as const;
 
 export function getMissingCitationFields(metadata: ArticleMetadata) {
   const missing: Array<(typeof REQUIRED_FIELDS)[number]> = [];
+  if (metadata.sourceType !== "journal") return missing;
   if (!metadata.authors.some((author) => author.trim())) missing.push("authors");
   if (!metadata.title.trim()) missing.push("title");
   if (!(metadata.journalAbbreviation || metadata.journal).trim()) {
@@ -41,6 +42,7 @@ function shortenPageRange(value: string) {
 }
 
 export function formatNlmCitation(metadata: ArticleMetadata) {
+  if (metadata.sourceType !== "journal") return "";
   if (getMissingCitationFields(metadata).length > 0) return "";
 
   const authors = metadata.authors.map(clean).filter(Boolean).join(", ");

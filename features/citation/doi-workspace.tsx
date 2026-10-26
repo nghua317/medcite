@@ -1,8 +1,14 @@
 "use client";
 
 import { useMemo, useState, type FormEvent } from "react";
-import { Alert, Button, Paper, TextInput } from "@mantine/core";
-import type { ArticleMetadata, CitationLookupSuccess } from "./server/types";
+import { Alert, Button, Paper, Select, TextInput } from "@mantine/core";
+import { detectInputKind, type InputKind } from "./input-detection";
+import type {
+  ArticleMetadata,
+  CitationLookupCandidates,
+  CitationLookupSuccess,
+  SourceCandidate,
+} from "./server/types";
 import { formatNlmCitation, getMissingCitationFields } from "./format-nlm";
 import { CitationResultPreview } from "./citation-result-preview";
 import styles from "./citation.module.css";
@@ -12,9 +18,14 @@ type LookupFailure = {
   error: { code: string; message: string };
 };
 
+type SearchKind = "auto" | InputKind;
+
 export function DoiWorkspace() {
-  const [doi, setDoi] = useState("");
+  const [query, setQuery] = useState("");
+  const [searchKind, setSearchKind] = useState<SearchKind>("auto");
+  const [detectedKind, setDetectedKind] = useState<InputKind | null>(null);
   const [result, setResult] = useState<CitationLookupSuccess | null>(null);
+  const [candidates, setCandidates] = useState<SourceCandidate[]>([]);
   const [metadata, setMetadata] = useState<ArticleMetadata | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -33,26 +44,35 @@ export function DoiWorkspace() {
     setCopied(false);
     setResult(null);
     setMetadata(null);
+    setCandidates([]);
 
-    if (!doi.trim()) {
-      setError("Enter a DOI or DOI link.");
+    if (!query.trim()) {
+      setError("Enter a title, keyword, URL, DOI, or ISBN.");
       return;
     }
 
+    const kind = searchKind === "auto" ? detectInputKind(query) : searchKind;
+    setDetectedKind(kind);
     setLoading(true);
     try {
       const response = await fetch("/api/citations/lookup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ doi }),
+        body: JSON.stringify({ query, kind }),
       });
       const payload = (await response.json()) as
         | CitationLookupSuccess
+        | CitationLookupCandidates
         | LookupFailure;
 
       if (!response.ok || !payload.ok) {
         const failure = payload as LookupFailure;
         throw new Error(failure.error?.message ?? "Please try again.");
+      }
+
+      if (payload.resultType === "candidates") {
+        setCandidates(payload.candidates);
+        return;
       }
 
       setResult(payload);
@@ -62,6 +82,35 @@ export function DoiWorkspace() {
         requestError instanceof Error
           ? requestError.message
           : "We couldn’t complete the lookup. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function selectCandidate(candidate: SourceCandidate) {
+    setError(null);
+    setCopied(false);
+    setLoading(true);
+    try {
+      const response = await fetch("/api/citations/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: candidate.resolve.value, kind: candidate.resolve.kind }),
+      });
+      const payload = (await response.json()) as CitationLookupSuccess | LookupFailure;
+      if (!response.ok || !payload.ok || payload.resultType !== "resolved") {
+        const failure = payload as LookupFailure;
+        throw new Error(failure.error?.message ?? "Please try again.");
+      }
+      setResult(payload);
+      setMetadata(payload.metadata);
+      setCandidates([]);
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "We couldn’t load that source. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -94,10 +143,23 @@ export function DoiWorkspace() {
           <TextInput
             classNames={{ input: styles.input, label: styles.label }}
             error={error && !result ? error : undefined}
-            label="DOI or DOI link"
-            onChange={(event) => setDoi(event.currentTarget.value)}
-            placeholder="Paste a DOI or https://doi.org/..."
-            value={doi}
+            label="Title, keywords, URL, DOI, or ISBN"
+            onChange={(event) => setQuery(event.currentTarget.value)}
+            placeholder="Search by title, URL, DOI, or ISBN"
+            value={query}
+          />
+          <Select
+            classNames={{ input: styles.input, label: styles.label }}
+            data={[
+              { value: "auto", label: "Auto detect" },
+              { value: "doi", label: "DOI" },
+              { value: "title", label: "Title / keywords" },
+              { value: "url", label: "URL" },
+              { value: "isbn", label: "ISBN" },
+            ]}
+            label="Input type"
+            onChange={(value) => setSearchKind((value as SearchKind) ?? "auto")}
+            value={searchKind}
           />
           <Button
             className={styles.submitButton}
@@ -110,7 +172,10 @@ export function DoiWorkspace() {
           </Button>
         </form>
         <p className={styles.helperText}>
-          For English medical journal articles. Review the details before copying.
+          {detectedKind
+            ? `Detected as ${detectedKind === "title" ? "title / keywords" : detectedKind.toUpperCase()}. `
+            : ""}
+          Review source details before copying.
         </p>
       </Paper>
 
@@ -124,6 +189,35 @@ export function DoiWorkspace() {
         <Alert className={styles.feedback} color="orange" title="We couldn’t create a reference" variant="light">
           {error}
         </Alert>
+      )}
+
+      {candidates.length > 0 && (
+        <Paper className={styles.candidatePanel} radius="lg" withBorder>
+          <div className={styles.candidateHeader}>
+            <div>
+              <p className={styles.resultEyebrow}>Choose a source</p>
+              <h2 className={styles.resultTitle}>Which source did you mean?</h2>
+            </div>
+            <span className={styles.candidateCount}>{candidates.length} matches</span>
+          </div>
+          <div className={styles.candidateList}>
+            {candidates.map((candidate) => (
+              <button
+                className={styles.candidate}
+                key={candidate.id}
+                onClick={() => selectCandidate(candidate)}
+                type="button"
+              >
+                <strong>{candidate.title}</strong>
+                <span>
+                  {[candidate.authors.join(", "), candidate.year, candidate.container]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Paper>
       )}
 
       {result && metadata && (
@@ -144,7 +238,7 @@ export function DoiWorkspace() {
             onUpdate={updateMetadata}
           />
           <p className={styles.sourceNote}>
-            Metadata source: {result.metadata.source === "pubmed+crossref" ? "PubMed and Crossref" : result.metadata.source === "pubmed" ? "PubMed" : "Crossref"}. Your edits stay on this page and aren’t saved after refresh.
+            Metadata source: {result.metadata.source === "pubmed+crossref" ? "PubMed and Crossref" : result.metadata.source === "pubmed" ? "PubMed" : result.metadata.source === "crossref" ? "Crossref" : result.metadata.source === "openlibrary" ? "Open Library" : "The web page"}. Your edits stay on this page and aren’t saved after refresh.
           </p>
         </div>
       )}
