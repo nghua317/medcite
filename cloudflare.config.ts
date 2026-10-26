@@ -6,6 +6,7 @@ export default defineConfig({
     entrypoint: "vinext/server/fetch-handler",
     compatibilityDate: "2026-10-25",
     compatibilityFlags: ["nodejs_compat"],
+    domains: ["scribbrcitationgenerator.com"],
     assets: {
       htmlHandling: "none",
       notFoundHandling: "none",
