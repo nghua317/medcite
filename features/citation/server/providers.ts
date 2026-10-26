@@ -11,6 +11,7 @@ async function getJson(url: URL): Promise<unknown> {
     signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
   });
 
+  if (response.status === 404) return null;
   if (!response.ok) {
     throw new Error(`Metadata provider returned HTTP ${response.status}`);
   }
