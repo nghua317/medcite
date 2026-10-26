@@ -10,11 +10,11 @@ export default function HomePage() {
         <section className={styles.hero} aria-labelledby="page-title">
           <p className={styles.eyebrow}>A simpler way to cite medical research</p>
           <h1 className={styles.title} id="page-title">
-            Simple medical citations
+            Citation Generator for Medical Articles
           </h1>
           <p className={styles.subtitle}>
-            Paste a DOI to create an NLM-style reference for a medical journal
-            article.
+            Create an NLM-style citation from a DOI and review it before
+            copying.
           </p>
         </section>
 
