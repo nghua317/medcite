@@ -156,3 +156,7 @@
 用户确认先将网站部署到已登录的 Cloudflare 账号。检查发现账号中已有 `refine-bibliography` Pages 项目，但其公网地址显示服务暂停，且项目没有连接 Git 仓库；该项目的手动上传入口只接受静态 HTML、CSS 和 JS，不能承载当前 Next.js 的 DOI 查询接口。
 
 因此首版采用 Cloudflare Workers + vinext 适配现有 Next.js 16 项目。首版不启用缓存、KV/数据库或图片优化。兼容性检查显示当前 App Router、页面、布局和 Route Handler 为 100% compatible；本地 vinext 构建和接口验证通过后，再进行公开部署。
+
+## 13. 站内内容与导航（2026-10-27）
+
+用户确认首批增加 Citation Guides、FAQ 和 About 页面，参考 Scribbr 的内容入口与相关页面互链。MedCite/CiteEase 当前内容聚焦医学期刊文章、DOI 与 NLM；可查找其他来源不代表已支持相应引用格式。首批指南主题为 NLM 医学期刊引用、查找 DOI、检查生成的引用。页面需通过首页导航和站点地图发现，并在相关位置链接回引用工具。暂不增加账号、注册或搜索入口。

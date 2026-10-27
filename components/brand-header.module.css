@@ -2,6 +2,7 @@
   display: flex;
   min-height: 76px;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--color-line);
   background: rgb(255 255 255 / 86%);
   padding: 0 max(24px, calc((100vw - var(--content-width)) / 2));
@@ -30,9 +31,37 @@
   letter-spacing: -0.06em;
 }
 
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navigation a {
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.navigation a:hover,
+.navigation a:focus-visible {
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 @media (max-width: 640px) {
   .header {
     min-height: 64px;
     padding: 0 16px;
+  }
+
+  .navigation {
+    gap: 8px;
+  }
+
+  .navigation a {
+    font-size: 0.78rem;
   }
 }

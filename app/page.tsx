@@ -1,4 +1,5 @@
 import { BrandHeader } from "@/components/brand-header";
+import Link from "next/link";
 import { DoiWorkspace } from "@/features/citation/doi-workspace";
 import styles from "./page.module.css";
 
@@ -13,8 +14,8 @@ export default function HomePage() {
             Citation Generator for Medical Articles
           </h1>
           <p className={styles.subtitle}>
-            Create an NLM-style citation from a DOI and review it before
-            copying.
+            Search by DOI, title, URL, or ISBN, then review the available source
+            details. NLM formatting is available for medical journal articles.
           </p>
         </section>
 
@@ -151,6 +152,25 @@ export default function HomePage() {
                 source type instead.
               </p>
             </div>
+            <p className={styles.guideText}>
+              <Link href="/faq">Browse all citation tool FAQs</Link>
+            </p>
+          </section>
+          <section className={styles.guideSection} aria-labelledby="more-guides">
+            <h2 className={styles.guideTitle} id="more-guides">
+              More citation help
+            </h2>
+            <p className={styles.guideText}>
+              Read our guides to{" "}
+              <Link href="/guides/how-to-cite-medical-journal-article-nlm">
+                citing a medical journal article in NLM style
+              </Link>
+              , <Link href="/guides/find-a-doi">finding a DOI</Link>, and{" "}
+              <Link href="/guides/check-a-generated-citation">
+                checking a generated citation
+              </Link>
+              . Learn <Link href="/about">about CiteEase</Link>.
+            </p>
           </section>
         </section>
       </main>

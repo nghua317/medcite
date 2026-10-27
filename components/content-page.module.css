@@ -1,0 +1,166 @@
+.main {
+  width: min(900px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0 88px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.breadcrumbs > * + *::before {
+  content: "/";
+  margin-right: 10px;
+  color: #9aa4b4;
+}
+
+.breadcrumbs a,
+.content a {
+  color: var(--color-accent-dark);
+  text-underline-offset: 3px;
+}
+
+.breadcrumbs a:focus-visible,
+.content a:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.hero {
+  max-width: 760px;
+  margin: 52px 0 38px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--color-accent-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.12;
+}
+
+.description {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: var(--color-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.content {
+  max-width: 760px;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.content h2 {
+  margin: 38px 0 12px;
+  color: var(--color-ink);
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.content h3 {
+  margin: 26px 0 8px;
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+.content p {
+  margin: 0 0 16px;
+}
+
+.faqItem + .faqItem {
+  margin-top: 28px;
+}
+
+.faqItem h2 {
+  margin-top: 0;
+  font-size: 1.12rem;
+}
+
+.content ol,
+.content ul {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 22px;
+  padding-left: 24px;
+}
+
+.linkList {
+  display: grid;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkList li {
+  padding: 0 0 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.linkList h2 {
+  margin: 0 0 6px;
+  font-size: 1.18rem;
+}
+
+.linkList p {
+  margin: 0;
+}
+
+.callout {
+  margin-top: 42px;
+  border-top: 1px solid var(--color-line);
+  padding-top: 24px;
+}
+
+.callout h2 {
+  margin: 0 0 8px;
+}
+
+.actionLink {
+  display: inline-block;
+  margin: 2px 18px 8px 0;
+  font-weight: 700;
+}
+
+.relatedLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 34px;
+  border-top: 1px solid var(--color-line);
+  padding-top: 18px;
+}
+
+.relatedLinks h2 {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .main {
+    width: min(100% - 32px, 900px);
+    padding-top: 22px;
+  }
+
+  .hero {
+    margin: 40px 0 30px;
+  }
+}
