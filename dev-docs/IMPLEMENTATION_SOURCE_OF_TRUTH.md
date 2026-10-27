@@ -1,7 +1,7 @@
 # MedCite《实施真源文档》
 
-更新时间：2026-10-25
-验收范围：首版后端 DOI 查询与 NLM 引用生成链路
+更新时间：2026-10-27
+验收范围：多类型来源查询与医学期刊 NLM 引用生成链路
 Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交为准
 
 > 本文记录当前实现的实际行为，是本次验收和运行依据。未来计划不视为已实现功能。
@@ -12,9 +12,9 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 | --- | --- | --- |
 | 1. 验规则 | 通过（文档化） | 第 2 节列出来源、文件和验证方式 |
 | 2. 目录责任 | 通过 | `app`、`features/citation`、`components` 边界清楚 |
-| 3. 最小模块演练 | 通过（静态链路） | 第 4 节；真实上游请求需联网复测 |
+| 3. 最小模块演练 | 通过（线上基本流程） | DOI、标题/关键词、URL、ISBN 已真实联网验收 |
 | 4. 接口返回样例 | 通过（契约样例） | 第 5 节列出 11 个场景 |
-| 5. 框架复用 | 通过 | 使用 Next.js Route Handler、`fetch`、`Response.json`、`AbortSignal.timeout` |
+| 5. 框架复用 | 通过 | 使用 Next.js Route Handler、`fetch`、`Response.json`、`AbortSignal.timeout(10000)` |
 | 6. 固定运行证据包 | 通过（命令已确定） | 第 7 节；首版没有数据库连接 |
 | 7. 实施真源文档 | 已建立 | 当前文件 |
 | 8. Git 归档基准版本 | 待本次提交完成 | 最终回复给出提交短哈希 |
@@ -23,11 +23,13 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 
 | 规则 | 规则来源 | 实现文件 | 验证方式 | 当前结果 |
 | --- | --- | --- | --- | --- |
-| 接受纯 DOI 或 DOI 链接 | `AGENTS.md`、`PROJECT_BRIEF.md` 首版范围 | `features/citation/server/doi.ts` | 检查 `normalizeDoi`；用合法/非法请求验证 | 静态通过；联网请求待复测 |
+| 接受 DOI、标题/关键词、URL 和 ISBN 查找来源 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/lookup.ts`、`providers.ts` | 输入识别、候选筛选以及线上完整流程 | 线上通过；网页/图书仅查询资料，格式暂未支持 |
+| 标题候选只展示期刊文章并按标题排序 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/providers.ts` | Crossref 搜索回归测试及标题候选实测 | 通过 |
+| 接受纯 DOI 或 DOI 链接 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/doi.ts` | 检查 `normalizeDoi`；用合法/非法请求验证 | 线上 DOI 与 DOI 链接均通过 |
 | 无效 DOI 返回可操作提示 | `AGENTS.md` 正确性与交互 | `doi.ts`、`app/api/citations/lookup/route.ts` | 检查错误类型到 HTTP 400 的映射 | 通过 |
 | PubMed 首选，Crossref 备用 | `PROJECT_BRIEF.md` 后端方案 | `features/citation/server/lookup.ts`、`providers.ts` | 检查调用顺序和回退条件 | 通过 |
 | 备用 DOI 必须匹配输入 | `PROJECT_BRIEF.md` 后端方案 | `providers.ts` | 检查 Crossref DOI 精确比较 | 通过 |
-| 只处理英文医学期刊文章 | `AGENTS.md`、`PROJECT_BRIEF.md` | `providers.ts`、`lookup.ts` | 检查语言、类型判断和 422 分支 | 静态通过；真实样例待复测 |
+| 只为英文医学期刊文章生成引用 | `AGENTS.md`、`PROJECT_BRIEF.md` | `providers.ts`、`lookup.ts` | 检查语言、类型判断和 422 分支 | 线上英文医学期刊样例通过；网页和图书格式未支持 |
 | 关键字段为空只提醒 | `AGENTS.md`、`PROJECT_BRIEF.md` | `format-nlm.ts`、`lookup.ts`、结果组件 | 检查 `missingFields` 和页面文案 | 通过 |
 | 关键字段缺失不生成伪造引用 | `PROJECT_BRIEF.md` | `format-nlm.ts` | 检查缺失时返回空引用 | 通过 |
 | 以 NLM 规则生成期刊引用 | `PROJECT_BRIEF.md` NLM 决策 | `features/citation/format-nlm.ts` | 检查作者、标题、期刊、日期、卷期页码、DOI、PMID | 初步通过；需官方样例逐条复核 |
@@ -40,7 +42,7 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 | --- | --- | --- |
 | `app/` | Next.js 框架目录 | 页面路由、布局、Route Handler 入口 |
 | `app/api/citations/lookup/route.ts` | 框架入口 + 薄适配 | 读请求、调用业务服务、转 HTTP 响应 |
-| `features/citation/` | 业务目录 | DOI 引用流程的展示、格式化和服务端业务模块 |
+| `features/citation/` | 业务目录 | 多类型来源查询、引用展示、格式化和服务端业务模块 |
 | `features/citation/server/doi.ts` | 业务模块 | DOI 规范化和校验 |
 | `features/citation/server/providers.ts` | 外部来源适配 | PubMed、Crossref 请求和数据转换 |
 | `features/citation/server/lookup.ts` | 业务编排 | 来源优先级、回退、类型判断、结果组装 |
@@ -49,7 +51,7 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 | `components/` | 可复用界面目录 | 跨功能视觉组件，不承载查询规则 |
 | `dev-docs/` | 项目资料目录 | 产品决定、技术方案、验收和运行证据 |
 
-框架入口没有直接写 PubMed 请求；业务逻辑集中在 `features/citation`。`route.ts` 保留请求体大小和 JSON 解析，因为它们属于 HTTP 边界责任。
+框架入口没有直接写 PubMed 或 Crossref 请求；业务逻辑集中在 `features/citation`。`route.ts` 保留请求体大小和 JSON 解析，因为它们属于 HTTP 边界责任。
 
 ## 4. 最小模块演练
 
@@ -135,13 +137,13 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 {"ok":false,"error":{"code":"UPSTREAM_FAILURE","message":"We couldn’t reach the article databases. Please try again in a moment."}}
 ```
 
-场景 5—8 可在无外网时验证；场景 1—4、9—11 需要可访问 PubMed/Crossref 的环境和固定测试 DOI。当前环境不能稳定访问外部服务，因此不把这些场景写成真实联网通过。
+DOI、DOI 链接、标题候选、关键词候选、URL 和 ISBN 已在正式站点完成真实联网流程验收。URL 和 ISBN 可返回来源资料，但其引用格式尚未实现。错误边界场景仍按上表测试计划逐项补充。
 
 ## 6. 框架复用验收
 
 - 使用 Next.js App Router 的 Route Handler，没有另起 Express/Fastify 服务。
 - 使用运行时原生 `fetch`，没有为简单 HTTP 请求添加额外 SDK。
-- 使用 `Response.json` 返回 JSON，使用 `AbortSignal.timeout(4000)` 控制上游超时。
+- 使用 `Response.json` 返回 JSON，使用 `AbortSignal.timeout(10000)` 控制上游超时。
 - 使用 TypeScript 类型定义统一元数据和错误码。
 - `CitationLookupError` 是必要的业务错误类型，用于把业务错误映射到 HTTP 状态。
 - 首版没有数据库、账号、缓存或队列，不为它们提前添加目录和客户端。

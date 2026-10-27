@@ -7,7 +7,7 @@ import type {
 const NCBI_BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 const CROSSREF_BASE_URL = "https://api.crossref.org/works";
 const OPEN_LIBRARY_SEARCH_URL = "https://openlibrary.org/search.json";
-const PROVIDER_TIMEOUT_MS = 4_000;
+const PROVIDER_TIMEOUT_MS = 10_000;
 const MAX_HTML_BYTES = 1_000_000;
 
 async function getJson(url: URL): Promise<unknown> {
@@ -296,8 +296,8 @@ export async function findInCrossref(
 
 export async function searchCrossref(query: string): Promise<SourceCandidate[]> {
   const url = new URL(CROSSREF_BASE_URL);
-  url.searchParams.set("query.bibliographic", query);
-  url.searchParams.set("rows", "5");
+  url.searchParams.set("query.title", query);
+  url.searchParams.set("rows", "20");
   const payload = asRecord(await getJson(url));
   const message = asRecord(payload?.message);
   const items = Array.isArray(message?.items) ? message.items : [];
@@ -305,21 +305,21 @@ export async function searchCrossref(query: string): Promise<SourceCandidate[]> 
     const record = asRecord(item);
     const doi = asString(record?.DOI).toLowerCase();
     const title = asString((Array.isArray(record?.title) ? record.title : [])[0]);
-    if (!doi || !title) return [];
     const type = asString(record?.type);
+    if (!doi || !title || type !== "journal-article") return [];
     const container = asString((Array.isArray(record?.["container-title"]) ? record["container-title"] : [])[0]);
     const date = asRecord(record?.published) ?? asRecord(record?.created);
     const dateParts = Array.isArray(date?.["date-parts"]) ? (date?.["date-parts"] as unknown[])[0] : [];
     return [{
       id: `crossref-${index}-${doi}`,
-      sourceType: type === "report" ? "report" : "journal",
+      sourceType: "journal",
       title,
       authors: formatCandidateAuthors(record?.author),
       year: Array.isArray(dateParts) ? String(dateParts[0] ?? "") : "",
       container,
       resolve: { kind: "doi", value: doi },
     } satisfies SourceCandidate];
-  });
+  }).slice(0, 5);
 }
 
 export async function findInOpenLibrary(isbn: string): Promise<ArticleMetadata | null> {
