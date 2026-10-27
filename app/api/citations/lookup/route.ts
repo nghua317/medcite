@@ -1,5 +1,5 @@
 import { CitationLookupError } from "@/features/citation/server/types";
-import { lookupSource } from "@/features/citation/server/lookup";
+import { lookupCitation } from "@/features/citation/server/lookup";
 
 export const runtime = "nodejs";
 
@@ -21,19 +21,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const input =
-    typeof body === "object" && body !== null && "query" in body
-      ? (body as { query?: unknown }).query
-      : typeof body === "object" && body !== null && "doi" in body
-        ? (body as { doi?: unknown }).doi
-        : undefined;
-  const kind =
-    typeof body === "object" && body !== null && "kind" in body
-      ? (body as { kind?: unknown }).kind
-      : "doi";
+  const doi =
+    typeof body === "object" && body !== null && "doi" in body
+      ? (body as { doi?: unknown }).doi
+      : undefined;
 
   try {
-    const result = await lookupSource(input, kind);
+    const result = await lookupCitation(doi);
     return Response.json(result);
   } catch (error) {
     if (error instanceof CitationLookupError) {

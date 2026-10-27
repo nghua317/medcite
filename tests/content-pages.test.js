@@ -17,6 +17,25 @@ test("homepage HTML is not cached across frontend deployments", async () => {
   assert.equal(cacheHeader?.value, "no-store, must-revalidate");
 });
 
+test("homepage exposes a DOI-only search field", async () => {
+  const { response, html } = await getPage("/");
+  assert.equal(response.status, 200);
+  const form = html.match(/<form\b[\s\S]*?<\/form>/)?.[0] ?? "";
+  assert.match(form, /DOI or DOI link/);
+  assert.doesNotMatch(form, /Title, keywords, URL, DOI, or ISBN|Input type/);
+});
+
+test("lookup API rejects title search requests", async () => {
+  const lookup = await fetch(new URL("/api/citations/lookup", baseUrl), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: "medical education", kind: "title" }),
+  });
+  const payload = await lookup.json();
+  assert.equal(lookup.status, 400);
+  assert.equal(payload.error.code, "INVALID_DOI");
+});
+
 test("content pages are public and linked from the site navigation", async () => {
   const paths = ["/guides", "/faq", "/about"];
 

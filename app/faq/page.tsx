@@ -14,8 +14,7 @@ const questions = [
     question: "What can I search for?",
     answer: (
       <>
-        You can enter a DOI, article title or keywords, a public webpage URL, or
-        an ISBN. Title and keyword searches return candidates for you to choose.
+        This version accepts a DOI or DOI link for a medical journal article.
         See <Link href="/guides/find-a-doi">how to find a DOI</Link> or return
         to the <Link href="/#citation-tool">citation tool</Link>.
       </>
@@ -25,9 +24,8 @@ const questions = [
     question: "Which sources can the tool format as a citation?",
     answer: (
       <>
-        The available citation format is NLM for medical journal articles.
-        Books and webpages may be looked up, but their source-specific citation
-        formats are not available yet. Read{" "}
+        This version accepts DOI inputs and formats medical journal articles in
+        NLM style. It does not look up books or webpages. Read{" "}
         <Link href="/guides/how-to-cite-medical-journal-article-nlm">
           the NLM journal citation guide
         </Link>.

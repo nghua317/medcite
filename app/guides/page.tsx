@@ -48,9 +48,8 @@ export default function GuidesPage() {
       </ul>
       <p>
         These guides focus on medical journal articles and NLM-style references.
-        CiteEase can look up other source types, but their citation formats are
-        not available yet. See the <Link href="/faq">FAQ</Link> for current
-        support details.
+        This version accepts DOI inputs for those articles. See the <Link href="/faq">FAQ</Link>
+        for current support details.
       </p>
       <ToolCallout />
     </ContentPage>

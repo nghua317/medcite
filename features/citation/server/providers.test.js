@@ -1,34 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { searchCrossref } from "./providers.ts";
+import { findInCrossref } from "./providers.ts";
 
-test("bibliographic searches allow a provider response that takes over four seconds", async () => {
-  const originalFetch = globalThis.fetch;
-
-  globalThis.fetch = (_input, { signal }) =>
-    new Promise((resolve, reject) => {
-      const timer = setTimeout(
-        () => resolve({ ok: true, status: 200, json: async () => ({ message: { items: [] } }) }),
-        4_500,
-      );
-      signal.addEventListener(
-        "abort",
-        () => {
-          clearTimeout(timer);
-          reject(signal.reason);
-        },
-        { once: true },
-      );
-    });
-
-  try {
-    assert.deepEqual(await searchCrossref("medical education"), []);
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
-});
-
-test("title searches return only journal article candidates ranked by title", async () => {
+test("Crossref fallback fetches metadata for the exact DOI", async () => {
   const originalFetch = globalThis.fetch;
   let requestedUrl;
   globalThis.fetch = async (input) => {
@@ -38,21 +12,38 @@ test("title searches return only journal article candidates ranked by title", as
       status: 200,
       json: async () => ({
         message: {
-          items: [
-            { DOI: "10.1000/review", type: "peer-review", title: ["Review of a vaccine study"] },
-            { DOI: "10.1000/data", type: "dataset", title: ["Recommendation of a vaccine study"] },
-            { DOI: "10.1000/paper", type: "journal-article", title: ["A vaccine study"] },
-          ],
+          DOI: "10.1000/example.1",
+          type: "journal-article",
+          title: ["A medical study"],
+          "container-title": ["Example Medical Journal"],
+          author: [{ given: "Jane A", family: "Smith" }],
+          "published-print": { "date-parts": [[2024, 5]] },
         },
       }),
     };
   };
 
   try {
-    const candidates = await searchCrossref("A vaccine study");
+    const result = await findInCrossref("10.1000/example.1");
 
-    assert.equal(requestedUrl.searchParams.get("query.title"), "A vaccine study");
-    assert.deepEqual(candidates.map((candidate) => candidate.title), ["A vaccine study"]);
+    assert.equal(requestedUrl.pathname, "/works/10.1000%2Fexample.1");
+    assert.equal(result.metadata.title, "A medical study");
+    assert.equal(result.isJournalArticle, true);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Crossref fallback rejects a record whose DOI does not match", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ message: { DOI: "10.1000/other" } }),
+  });
+
+  try {
+    assert.equal(await findInCrossref("10.1000/requested"), null);
   } finally {
     globalThis.fetch = originalFetch;
   }

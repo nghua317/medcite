@@ -39,16 +39,15 @@ export default function FindDoiGuide() {
       </ul>
       <p>
         A DOI link and a plain DOI identify the same item. Copy the complete
-        value, without surrounding quotation marks or sentence punctuation. If
-        the article has no DOI, you can try a title or keyword search, but check
-        the candidate list carefully before selecting a record.
+        value, without surrounding quotation marks or sentence punctuation. This
+        version requires a DOI and cannot search by title or keyword.
       </p>
       <h2>If the lookup finds no result</h2>
       <p>
         Check for a missing character or extra punctuation and compare the DOI
         with the publisher page. A valid DOI can still lack a matching record in
-        the sources available to the tool. You can also look up a source by its
-        title or keywords, then review the returned candidates.
+        the sources available to the tool. If it does, check the publisher page
+        and try again later.
       </p>
       <p>
         Once you have a result, follow the steps in{" "}

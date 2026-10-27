@@ -30,12 +30,8 @@ export function CitationResultPreview({
     <Paper className={styles.resultCard} radius="lg" withBorder>
       <div className={styles.resultHeader}>
         <div>
-          <p className={styles.resultEyebrow}>
-            {metadata.sourceType === "journal" ? "NLM reference" : "Source details"}
-          </p>
-          <h2 className={styles.resultTitle}>
-            {metadata.sourceType === "journal" ? "Your NLM reference" : "Source found"}
-          </h2>
+          <p className={styles.resultEyebrow}>NLM reference</p>
+          <h2 className={styles.resultTitle}>Your NLM reference</h2>
         </div>
         <Button className={styles.primaryButton} disabled={!citation} onClick={onCopy}>
           {copied ? "Copied" : "Copy reference"}
@@ -50,16 +46,10 @@ export function CitationResultPreview({
         <Alert
           className={styles.citationText}
           color="yellow"
-          title={
-            metadata.sourceType === "journal"
-              ? "Complete the required details"
-              : "Citation formatting is coming next"
-          }
+          title="Complete the required details"
           variant="light"
         >
-          {metadata.sourceType === "journal"
-            ? "Add the missing author, title, journal, or year to preview a reference."
-            : "We found this source. Source-specific formatting for this type will be added in the next step."}
+          Add the missing author, title, journal, or year to preview a reference.
         </Alert>
       )}
 

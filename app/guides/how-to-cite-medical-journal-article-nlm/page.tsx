@@ -48,10 +48,9 @@ export default function NlmJournalCitationGuide() {
       </ol>
       <h2>Use the right source type</h2>
       <p>
-        This tool formats medical journal articles in NLM style. A book or
-        webpage may be found through its ISBN or URL, but the corresponding
-        book or webpage citation format is not available yet. Do not use a
-        journal-article reference for a different source type.
+        This version accepts DOIs for medical journal articles and formats
+        those articles in NLM style. It does not look up books or webpages. Do
+        not use a journal-article reference for a different source type.
       </p>
       <p>
         For examples and detailed rules, consult the relevant chapter of NLM’s{" "}

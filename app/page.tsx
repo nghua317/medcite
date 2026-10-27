@@ -14,8 +14,8 @@ export default function HomePage() {
             Citation Generator for Medical Articles
           </h1>
           <p className={styles.subtitle}>
-            Search by DOI, title, URL, or ISBN, then review the available source
-            details. NLM formatting is available for medical journal articles.
+            Create an NLM-style citation from a medical article DOI and review
+            it before copying.
           </p>
         </section>
 
@@ -63,10 +63,9 @@ export default function HomePage() {
               <a href="https://www.ncbi.nlm.nih.gov/books/NBK7256/">
                 <em>Citing Medicine</em>
               </a>{" "}
-              guidance. Books, websites, reports, and other sources may be found,
-              but their source-specific citation formats are not available yet. A
-              DOI may also return no match if it is invalid or article details are
-              unavailable.
+              guidance. This version accepts DOIs for medical journal articles
+              only. A DOI may return no match if it is invalid or article details
+              are unavailable.
             </p>
           </section>
 
@@ -145,11 +144,9 @@ export default function HomePage() {
                 Can I use this format for a book or a website?
               </h3>
               <p className={styles.guideText}>
-                This NLM citation format is currently for medical journal
-                articles. The tool may find details for other source types, but
-                their citation formats are not ready yet. Don’t use a journal
-                reference for a book or website; use a format made for that
-                source type instead.
+                This version accepts DOIs for medical journal articles only. It
+                does not look up books or websites. Use a format made for those
+                source types instead.
               </p>
             </div>
             <p className={styles.guideText}>

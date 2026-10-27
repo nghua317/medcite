@@ -25,15 +25,13 @@ export default function AboutPage() {
       </p>
       <h2>What the tool does</h2>
       <p>
-        Search can start with a DOI, title or keywords, public webpage URL, or
-        ISBN. The information is retrieved from available records, and title
-        searches show candidates for you to choose. You can review and edit
-        returned details before copying.
+        Enter a DOI or DOI link for an English medical journal article. The
+        information is retrieved from available records. You can review and edit
+        the returned details before copying.
       </p>
       <p>
-        NLM formatting is currently available for medical journal articles.
-        Although the tool can look up books and webpages, their citation
-        formats are not ready yet. Visit the <Link href="/faq">FAQ</Link> for
+        This version only looks up DOIs and formats medical journal articles in
+        NLM style. It does not look up books or webpages. Visit the <Link href="/faq">FAQ</Link> for
         current support details or browse the <Link href="/guides">citation guides</Link>.
       </p>
       <h2>Review before you use a reference</h2>
