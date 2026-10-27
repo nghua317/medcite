@@ -162,7 +162,7 @@ export function DoiWorkspace() {
             value={searchKind}
           />
           <Button
-            className={styles.submitButton}
+            className={`${styles.primaryButton} ${styles.submitButton}`}
             type="submit"
             size="lg"
             loading={loading}

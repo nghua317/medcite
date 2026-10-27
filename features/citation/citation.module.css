@@ -38,15 +38,19 @@
   border-color: var(--color-accent);
 }
 
-.submitButton {
-  min-height: 54px;
-  flex: 0 0 auto;
+.primaryButton {
   background: var(--color-accent);
+  color: #fff;
   font-weight: 700;
 }
 
-.submitButton:hover {
+.primaryButton:hover {
   background: var(--color-accent-dark);
+}
+
+.submitButton {
+  min-height: 54px;
+  flex: 0 0 auto;
 }
 
 .helperText {
@@ -189,6 +193,12 @@
 
 .editButton {
   margin-top: 14px;
+  --button-color: var(--color-accent-dark);
+  color: var(--color-accent-dark) !important;
+}
+
+.editButton:hover {
+  background: #fffaf7;
 }
 
 @media (max-width: 640px) {

@@ -37,7 +37,7 @@ export function CitationResultPreview({
             {metadata.sourceType === "journal" ? "Your NLM reference" : "Source found"}
           </h2>
         </div>
-        <Button disabled={!citation} onClick={onCopy} variant="light">
+        <Button className={styles.primaryButton} disabled={!citation} onClick={onCopy}>
           {copied ? "Copied" : "Copy reference"}
         </Button>
       </div>
