@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import nextConfig from "../next.config.ts";
 
 const baseUrl = "http://localhost:3001";
 
@@ -7,6 +8,14 @@ async function getPage(path) {
   const response = await fetch(new URL(path, baseUrl));
   return { response, html: await response.text() };
 }
+
+test("homepage HTML is not cached across frontend deployments", async () => {
+  const rules = await nextConfig.headers();
+  const homeRule = rules.find((rule) => rule.source === "/");
+  const cacheHeader = homeRule?.headers.find((header) => header.key === "Cache-Control");
+
+  assert.equal(cacheHeader?.value, "no-store, must-revalidate");
+});
 
 test("content pages are public and linked from the site navigation", async () => {
   const paths = ["/guides", "/faq", "/about"];

@@ -117,6 +117,7 @@ MedCite 是一个帮助学生快速生成规范参考文献的网站。首版从
 - 已搭建英文浅色首页、品牌头部、多类型来源搜索区域和引用结果预览，适配窄屏布局。
 - 已接入 `POST /api/citations/lookup`：DOI 查询 PubMed/Crossref，标题/关键词通过 Crossref 提供期刊文章候选，URL 和 ISBN 查询可用来源资料。
 - 标题搜索使用 Crossref 标题检索并过滤非期刊文章记录；外部来源请求超时设为 10 秒。
+- 首页 HTML 使用 `Cache-Control: no-store`，避免部署后缓存的旧 HTML 引用已替换的 JavaScript 文件。
 - 英文医学期刊文章生成 NLM 引用；网页和图书目前只展示来源资料，尚无对应引用格式。
 - 页面已接入查询中的等待状态、成功结果、缺失字段提醒、错误提示、编辑和复制流程。
 - 依赖已安装；`npm run typecheck`、`node --test` 与 `npm run build:vinext` 均通过；线上主要输入流程已验收。

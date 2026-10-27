@@ -25,6 +25,7 @@ Git 基准：本文件归档提交完成后，以 `git log -1` 显示的提交�
 | --- | --- | --- | --- | --- |
 | 接受 DOI、标题/关键词、URL 和 ISBN 查找来源 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/lookup.ts`、`providers.ts` | 输入识别、候选筛选以及线上完整流程 | 线上通过；网页/图书仅查询资料，格式暂未支持 |
 | 标题候选只展示期刊文章并按标题排序 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/providers.ts` | Crossref 搜索回归测试及标题候选实测 | 通过 |
+| 首页 HTML 不缓存过期客户端脚本引用 | 线上 Chrome Console 404 证据 | `next.config.ts` | 验证首页 `Cache-Control: no-store` 并检查全部脚本返回 200 | 线上复验通过：首页返回 `no-store, must-revalidate`，当前引用的 9 个脚本全部 HTTP 200；旧 Chrome 页面仍需强制刷新后复测交互 |
 | 接受纯 DOI 或 DOI 链接 | `PROJECT_BRIEF.md` 首版范围 | `features/citation/server/doi.ts` | 检查 `normalizeDoi`；用合法/非法请求验证 | 线上 DOI 与 DOI 链接均通过 |
 | 无效 DOI 返回可操作提示 | `AGENTS.md` 正确性与交互 | `doi.ts`、`app/api/citations/lookup/route.ts` | 检查错误类型到 HTTP 400 的映射 | 通过 |
 | PubMed 首选，Crossref 备用 | `PROJECT_BRIEF.md` 后端方案 | `features/citation/server/lookup.ts`、`providers.ts` | 检查调用顺序和回退条件 | 通过 |
