@@ -85,6 +85,73 @@ export default function HomePage() {
               Return to the citation tool
             </a>
           </section>
+
+          <section className={styles.guideSection} aria-labelledby="citation-faq">
+            <h2 className={styles.guideTitle} id="citation-faq">
+              Common questions about DOI citations
+            </h2>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>Why can’t the tool find my DOI?</h3>
+              <p className={styles.guideText}>
+                Check that the DOI is complete and has no extra punctuation or
+                spaces. The lookup can only use article details available from its
+                metadata sources, so a valid DOI may still have no matching record
+                here. If a database is temporarily unavailable, try the lookup
+                again later.
+              </p>
+            </div>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>Are the article details verified?</h3>
+              <p className={styles.guideText}>
+                No. Details are retrieved from bibliographic records and may be
+                incomplete or inconsistent with the published paper. Compare the
+                author names, article title, journal, and year with the original
+                source before using the reference. You can edit the details on the
+                page if you spot an error.
+              </p>
+            </div>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>What does a missing-detail notice mean?</h3>
+              <p className={styles.guideText}>
+                It means one or more required fields are blank. It does not mean
+                the other fields have been checked for accuracy. Some articles
+                also use an article number or omit traditional volume, issue, or
+                page details, so compare the result with the article itself.
+              </p>
+            </div>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>Will my edits be saved?</h3>
+              <p className={styles.guideText}>
+                Edits stay in the current page while you review and copy the
+                reference. They are not saved to an account or project, and they
+                disappear when you refresh or leave the page. Copy the corrected
+                reference before closing it.
+              </p>
+            </div>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>
+                Does NLM follow every medical journal’s instructions?
+              </h3>
+              <p className={styles.guideText}>
+                NLM is the reference style used by this tool, but individual
+                journals and instructors may request extra punctuation, fields,
+                or ordering rules. Check the target journal’s author instructions
+                or your course requirements before submitting your work.
+              </p>
+            </div>
+            <div className={styles.faqItem}>
+              <h3 className={styles.faqQuestion}>
+                Can I use this format for a book or a website?
+              </h3>
+              <p className={styles.guideText}>
+                This NLM citation format is currently for medical journal
+                articles. The tool may find details for other source types, but
+                their citation formats are not ready yet. Don’t use a journal
+                reference for a book or website; use a format made for that
+                source type instead.
+              </p>
+            </div>
+          </section>
         </section>
       </main>
     </>

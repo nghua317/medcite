@@ -48,6 +48,17 @@
   margin-top: 36px;
 }
 
+.faqItem + .faqItem {
+  margin-top: 20px;
+}
+
+.faqQuestion {
+  margin: 0 0 6px;
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
 .guideTitle {
   margin: 0 0 14px;
   color: var(--color-ink);
