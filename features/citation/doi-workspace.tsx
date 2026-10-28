@@ -46,7 +46,9 @@ export function DoiWorkspace() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ doi }),
       });
-      const payload = (await response.json()) as CitationLookupSuccess | LookupFailure;
+      const payload = (await response.json()) as
+        | CitationLookupSuccess
+        | LookupFailure;
 
       if (!response.ok || !payload.ok) {
         const failure = payload as LookupFailure;
@@ -98,7 +100,7 @@ export function DoiWorkspace() {
             value={doi}
           />
           <Button
-            className={`${styles.primaryButton} ${styles.submitButton}`}
+            className={styles.submitButton}
             type="submit"
             size="lg"
             loading={loading}

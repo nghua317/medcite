@@ -37,77 +37,6 @@
   line-height: 1.65;
 }
 
-.guide {
-  width: min(850px, 100%);
-  margin: 76px auto 0;
-  border-top: 1px solid var(--color-line);
-  padding-top: 42px;
-}
-
-.guideSection + .guideSection {
-  margin-top: 36px;
-}
-
-.faqItem + .faqItem {
-  margin-top: 20px;
-}
-
-.faqQuestion {
-  margin: 0 0 6px;
-  color: var(--color-ink);
-  font-size: 1.05rem;
-  line-height: 1.4;
-}
-
-.guideTitle {
-  margin: 0 0 14px;
-  color: var(--color-ink);
-  font-size: 1.25rem;
-  line-height: 1.35;
-}
-
-.guideText {
-  margin: 0 0 12px;
-  color: var(--color-muted);
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-.guideText a {
-  color: var(--color-accent-dark);
-  text-underline-offset: 3px;
-}
-
-.guideText a:focus-visible {
-  border-radius: 2px;
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.steps {
-  display: grid;
-  gap: 8px;
-  margin: 16px 0 0;
-  padding-left: 22px;
-  color: var(--color-muted);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.guideLink {
-  display: inline-block;
-  margin-top: 4px;
-  color: var(--color-accent-dark);
-  font-weight: 700;
-  text-underline-offset: 3px;
-}
-
-.guideLink:focus-visible {
-  border-radius: 2px;
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
 @media (max-width: 640px) {
   .main {
     width: min(100% - 32px, var(--content-width));
@@ -119,14 +48,5 @@
 
   .eyebrow {
     font-size: 0.7rem;
-  }
-
-  .guide {
-    margin-top: 54px;
-    padding-top: 30px;
-  }
-
-  .guideSection + .guideSection {
-    margin-top: 30px;
   }
 }

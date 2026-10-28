@@ -2,7 +2,7 @@ import type { MetadataProviderResult } from "./types";
 
 const NCBI_BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 const CROSSREF_BASE_URL = "https://api.crossref.org/works";
-const PROVIDER_TIMEOUT_MS = 10_000;
+const PROVIDER_TIMEOUT_MS = 4_000;
 
 async function getJson(url: URL): Promise<unknown> {
   const response = await fetch(url, {

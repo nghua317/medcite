@@ -33,7 +33,7 @@ export function CitationResultPreview({
           <p className={styles.resultEyebrow}>NLM reference</p>
           <h2 className={styles.resultTitle}>Your NLM reference</h2>
         </div>
-        <Button className={styles.primaryButton} disabled={!citation} onClick={onCopy}>
+        <Button disabled={!citation} onClick={onCopy} variant="light">
           {copied ? "Copied" : "Copy reference"}
         </Button>
       </div>
@@ -43,12 +43,7 @@ export function CitationResultPreview({
           {citation}
         </div>
       ) : (
-        <Alert
-          className={styles.citationText}
-          color="yellow"
-          title="Complete the required details"
-          variant="light"
-        >
+        <Alert className={styles.citationText} color="yellow" title="Complete the required details" variant="light">
           Add the missing author, title, journal, or year to preview a reference.
         </Alert>
       )}

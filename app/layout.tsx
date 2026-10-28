@@ -5,9 +5,9 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Citation Generator for Medical Articles | CiteEase",
+  title: "MedCite — Simple medical citations",
   description:
-    "Create an NLM-style citation from a DOI and review it before copying.",
+    "Create a clear NLM-style reference for an English medical journal article.",
 };
 
 export default function RootLayout({

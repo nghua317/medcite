@@ -38,19 +38,15 @@
   border-color: var(--color-accent);
 }
 
-.primaryButton {
-  background: var(--color-accent);
-  color: #fff;
-  font-weight: 700;
-}
-
-.primaryButton:hover {
-  background: var(--color-accent-dark);
-}
-
 .submitButton {
   min-height: 54px;
   flex: 0 0 auto;
+  background: var(--color-accent);
+  font-weight: 700;
+}
+
+.submitButton:hover {
+  background: var(--color-accent-dark);
 }
 
 .helperText {
@@ -136,12 +132,6 @@
 
 .editButton {
   margin-top: 14px;
-  --button-color: var(--color-accent-dark);
-  color: var(--color-accent-dark) !important;
-}
-
-.editButton:hover {
-  background: #fffaf7;
 }
 
 @media (max-width: 640px) {
@@ -163,10 +153,6 @@
   }
 
   .resultCard {
-    padding: 18px;
-  }
-
-  .candidatePanel {
     padding: 18px;
   }
 
